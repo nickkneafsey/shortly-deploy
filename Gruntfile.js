@@ -3,6 +3,17 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     concat: {
+      dist: {
+        src: [
+          'public/lib/jquery.js',
+          'public/lib/underscore.js',
+          'public/lib/backbone.js',
+          'public/lib/handlebars.js',
+          
+          'public/client/*.js'
+        ],
+        dest: 'public/dist/production.js'
+      }
     },
 
     mochaTest: {
@@ -21,6 +32,11 @@ module.exports = function(grunt) {
     },
 
     uglify: {
+      my_target: {
+        files: {
+          'public/dist/production.min.js': ['public/dist/production.js']
+        }
+      }
     },
 
     jshint: {
@@ -93,9 +109,8 @@ module.exports = function(grunt) {
     'mochaTest'
   ]);
 
-  grunt.registerTask('build', [
-  ]);
-
+  grunt.registerTask('build', ['concat', 'uglify']);
+  grunt.registerTask('default', ['build']);
   grunt.registerTask('upload', function(n) {
     if(grunt.option('prod')) {
       // add your production server task here
